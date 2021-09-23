@@ -1,75 +1,82 @@
 /*
- * Автори: https://www.geeksforgeeks.org/heap-sort/
+ * Copied: https://www.geeksforgeeks.org/heap-sort/
  *
- * Дата: 23.09.2021
+ * Date: 23.09.2021
  *
- * Програма на основі вхідного масиву arr[] виконує сорутвання з допомогою алгоритму HeapSort
- * та виводить результат сортування в консоль
+ * Version: 1.1
+ *
+ * The program based on the input array arr [] performs sorting using the HeapSort algorithm
+ * and displays the sort result in the console
  */
 
 public class HeapSort
 {
+
     public void sort(int arr[])
     {
-        int n = arr.length;
+        int sizeHeap = arr.length;
 
-        // Будуємо купку, в результаті отримаємо двійкове дерево, де корінь більше за дочірні вузли
-        for (int i = n / 2 - 1; i >= 0; i--)
-            heapify(arr, n, i);
+        // We build a pile, resulting in a binary tree where the root is larger than the child nodes
+        for (int nodeIndex = sizeHeap / 2 - 1; nodeIndex >= 0; nodeIndex--) {
+            heapify(arr, sizeHeap, nodeIndex);
+        }
 
-        // Один за одним виймаємо елементи з купи
-        for (int i=n-1; i>=0; i--)
+        // One by one we take out elements from a heap
+        for (int nodeIndex = sizeHeap-1; nodeIndex >= 0; nodeIndex--)
         {
-            // Переміщуємо теперішній корінь в кінець масиву
+            // Move the current root to the end of the array
             int temp = arr[0];
-            arr[0] = arr[i];
-            arr[i] = temp;
+            arr[0] = arr[nodeIndex];
+            arr[nodeIndex] = temp;
 
-            // Викликаємо процедуру heapify на зменшеній купці
-            heapify(arr, i, 0);
+            // Call the heapify procedure on a reduced heap
+            heapify(arr, nodeIndex, 0);
         }
     }
 
-    //Процедура перетворення в двійкову купу піддерева з корневим узлом і, що є
-    // індексом в arr []. n - розмір купи
-    void heapify(int arr[], int n, int i)
+    // The conversion procedure in the binary purchase is a subtree with a root node and is an index in arr [].
+    // n is the size of the heap
+    void heapify(int arr[], int sizeHeap, int nodeIndex)
     {
-        int largest = i; // Ініціалізуємо найбільший елемент як корінь
-        int l = 2*i + 1; // лівий = 2*i + 1
-        int r = 2*i + 2; // правий = 2*i + 2
+        int largestIndex = nodeIndex;                           // Initialize the largest element as the root
+        int leftChildElementIndex = 2 * nodeIndex + 1;     // left = 2*i + 1
+        int rightChildElementIndex = 2 * nodeIndex + 2;    // right = 2*i + 2
 
-        // Якщо лівий дочірній елемент більше кореня
-        if (l < n && arr[l] > arr[largest])
-            largest = l;
+        // If the left child element is larger than the root
+        if (leftChildElementIndex < sizeHeap && arr[leftChildElementIndex] > arr[largestIndex]){
+            largestIndex = leftChildElementIndex;
+        }
 
-        // Якщо лівий дочірній елемет більше, ніж самий великий елемент на теперішній час
-        if (r < n && arr[r] > arr[largest])
-            largest = r;
-        // Якщо самий великий елемент не корінь
-        if (largest != i)
+        // If the left child element is larger than the largest at the moment
+        if (rightChildElementIndex < sizeHeap && arr[rightChildElementIndex] > arr[largestIndex]) {
+            largestIndex = rightChildElementIndex;
+        }
+
+        // If the largest element is not the root
+        if (largestIndex != nodeIndex)
         {
-            int swap = arr[i];
-            arr[i] = arr[largest];
-            arr[largest] = swap;
+            int swap = arr[nodeIndex];
+            arr[nodeIndex] = arr[largestIndex];
+            arr[largestIndex] = swap;
 
-            // Рекурсивно перетворюємо в двійкову купу порушене піддерево
-            heapify(arr, n, largest);
+            // We recursively convert a broken subtree into a binary heap
+            heapify(arr, sizeHeap, largestIndex);
         }
     }
 
-    /* Додаткова функція для виводу на екран масиву розміру n */
+    /* An additional function for displaying an array of size sizeArray  */
     static void printArray(int arr[])
     {
-        int n = arr.length;
-        for (int i=0; i<n; ++i)
+        int sizeArray = arr.length;
+        for (int i=0; i<sizeArray; ++i)
             System.out.print(arr[i]+" ");
         System.out.println();
     }
 
-    // Головна програма
+    //The main program
     public static void main(String args[])
     {
-        int arr[] = {12, 11, 13, 5, 6, 7, 20, 55, 16};
+        int arr[] = {12, 11, 13, 33, 5, 6, 7, 20, 55, 16};
 
         HeapSort ob = new HeapSort();
         ob.sort(arr);
